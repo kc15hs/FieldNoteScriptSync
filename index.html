@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FieldNote ScriptSync</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./layout.css" />
+    <link rel="stylesheet" href="./event-title.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div><p class="eyebrow">LOCAL ZIP EDITOR</p><h1>FieldNote ScriptSync</h1></div>
+      <div class="header-actions">
+        <label class="button" for="source-input">本文ZIPから開く</label>
+        <input id="source-input" type="file" accept=".zip,application/zip" hidden />
+        <label class="button primary" for="speech-input">読み上げZIPから開く</label>
+        <input id="speech-input" type="file" accept=".zip,application/zip" hidden />
+        <button id="save-button" class="button" disabled>ZIPを上書き保存</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="empty-state" class="empty-state">
+        <div class="empty-icon">⇧</div>
+        <h2>2つのFieldNote ZIPを選択</h2>
+        <p>「本文編集ZIP」と「speech ZIP」を選択してください。本文ZIPは参照専用で、読み上げZIPだけを更新します。</p>
+        <div class="header-actions"><label class="button" for="source-input">本文ZIPから開く</label><label class="button primary" for="speech-input">読み上げZIPから開く</label></div>
+      </section>
+
+      <section id="workspace" hidden>
+        <div class="toolbar">
+          <label>イベント <select id="event-select"></select></label>
+          <span id="file-status" aria-live="polite"></span>
+        </div>
+        <div id="schema-notice" class="notice" hidden></div>
+        <div class="editor-grid">
+          <article class="card source-card">
+            <div class="card-heading"><div><p class="label">REFERENCE</p><h2>元本文</h2></div><button id="source-copy" class="text-button">コピー</button></div>
+            <h3 id="source-title"></h3>
+            <div id="source-text" class="script-view" tabindex="0" aria-label="元本文"></div>
+          </article>
+          <article class="card reading-card">
+            <div class="card-heading"><div><p class="label">EDITABLE</p><h2>読み上げ文章</h2></div><div class="reading-heading-actions"><span id="dirty-mark" hidden>未保存</span><div class="script-actions">
+              <button id="reading-copy" class="text-button">コピー</button><span></span>
+              <button id="reading-paste" class="text-button" disabled>ペースト</button><span></span>
+              <button id="undo-button" class="text-button" disabled>元に戻す</button><span></span>
+              <button id="delete-button" class="text-button danger">削除</button>
+            </div></div></div>
+            <label class="sr-only" for="reading-title">読み上げタイトル</label>
+            <div class="reading-title-row"><span id="reading-event-number" class="event-number"></span><input id="reading-title" class="title-input" placeholder="タイトル" /></div>
+            <div id="reading-editor" class="script-editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="読み上げ文章"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer id="player" class="player" hidden>
+      <button id="play-button" class="play-button" aria-label="再生">▶</button>
+      <span id="play-label">再生待機中</span>
+      <input id="progress" type="range" min="0" max="0" value="0" aria-label="再生位置" />
+      <label>速度 <select id="rate"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label>
+    </footer>
+
+    <dialog id="confirm-dialog"><form method="dialog"><h2 id="dialog-title"></h2><p id="dialog-message"></p><menu><button value="cancel">キャンセル</button><button id="dialog-confirm" class="button primary" value="confirm">実行</button></menu></form></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

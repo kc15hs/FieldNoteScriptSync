@@ -1,0 +1,2 @@
+/* Keeps title and body baselines aligned across the two cards. */
+.reading-heading-actions{display:flex;align-items:center;gap:10px}.reading-card .script-actions{margin:0}.reading-card .card-heading{min-height:42px}.reading-card .title-input{margin-top:2px}@media(max-width:760px){.reading-heading-actions{gap:5px}.reading-heading-actions .script-actions{gap:6px}.reading-heading-actions .text-button{font-size:12px;padding:2px}}
